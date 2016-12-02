@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Secret Santa";
+}
+
+<div class="container">
+    @*<img src="~/Images/santa-claus.jpg" />*@
+    <img src="~/Images/santa2.png" class="santa"/>
+</div>
+
+
+
+<div id="button-container">
+    <h1 id="message">This is my secret message for all of you</h1>
+
+    <h2 id="name"></h2>
+
+    <button id="generate" class="btn btn-info">Get The Next Lucky Person</button>
+
+
+    <div class="form-group">
+        <label for="person"></label>
+        <input type="text" class="form-control" id="person" placeholder="Email, username">
+    </div>
+    <button id="received" class="btn btn-info">I Received my gift</button>
+</div>
+
+<script>
+    $('#generate').click(function () {
+        $.get('/home/next')
+            .done(function (data) {
+                console.log(data);
+                $('#name').text(data);
+            })
+    });
+
+
+    $('#received').click(function () {
+        var person = $('#person').val();
+        console.log(person)
+        $.post('/home/Received', {person: person})
+            .done(function (data) {
+                if (data.error) {
+                    return;
+                }
+
+                $('#generate').hide();
+            })
+    });
+</script>

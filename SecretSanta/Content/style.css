@@ -1,0 +1,24 @@
+﻿
+.container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size:cover;
+    z-index: -1;
+}
+
+.santa {
+    width: 100%;
+}
+
+#button-container {
+    position: absolute;
+    top: 100px;
+    left: 100PX;
+}
+
+h1, h2 {
+    color: #fff;
+}
