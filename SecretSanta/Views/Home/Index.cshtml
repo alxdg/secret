@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Secret Santa";
 }
 
@@ -8,56 +7,63 @@
     <img src="~/Images/santa2.png" class="santa"/>
 </div>
 
-
-
 <div id="button-container">
     <h1 id="message">
-    Welcome to 1st Annual Secret Santa!
+        Welcome to 1st Annual Secret Santa! <br/> <br/>
 
-        You received a gift, now it's your turn to give!
+        You received a gift, now it's your turn to give! <br/> <br/>
 
-        Click the button to generate the name of a GMR employee who YOU will give a gift to. But SHHHH! It's a secret!
+        Click the button to generate the name of a GMR employee who YOU will give a gift to. But SHHHH! It's a secret! <br/> <br/>
 
-        Remember, reuse the same box that you received and fill it with whatever fun secret santa gift(s) you would like. 
+        Remember, reuse the same box that you received and fill it with whatever fun secret santa gift(s) you would like. <br/> <br/>
 
-        Thanks!
+        Thanks!<br/> <br/>
 
-        -The Secret Santa Committee
-        
+        -The Secret Santa Committee<br/>
+
     </h1>
 
     <h2 id="name"></h2>
 
+    <a href="#" id="sit" target="_blank">Where do I sit?</a><br/> <br/>
+
     <button id="generate" class="btn btn-info">Get The Next Lucky Person</button>
+    <button id="accept" class="btn btn-primary">I happily accept :)</button>
+    
+    <h1 id="thank">Thank You for participating</h1>
 
-
-    <div class="form-group">
-        <label for="person"></label>
-        <input type="text" class="form-control" id="person" placeholder="Email, username">
-    </div>
-    <button id="received" class="btn btn-info">I Received my gift</button>
 </div>
 
 <script>
-    $('#generate').click(function () {
-        $.get('/home/next')
-            .done(function (data) {
-                console.log(data);
-                $('#name').text(data);
-            })
-    });
+    ($(function () {
+
+        var person = {};
+        $('#generate')
+            .click(function() {
+                $.get('/home/next')
+                    .done(function (data) {
+                        person = data;
+                        $('#name').text(data.FullName + ' - ' + data.Department);
+                        $('#sit').attr('href', 'http://factbook/TheTap/Profile.aspx?ID=' + data.EmployeeId).show();
+                        $('#generate').hide();
+                        $('#accept').show();
+                    });
+            });
 
 
-    $('#received').click(function () {
-        var person = $('#person').val();
-        console.log(person)
-        $.post('/home/Received', {person: person})
-            .done(function (data) {
-                if (data.error) {
-                    return;
-                }
+        $('#accept')
+            .click(function() {
+                $.post('/home/Received', { employeeId: person.EmployeeId })
+                    .done(function(data) {
+                        if (data.Error) {
 
-                $('#generate').hide();
-            })
-    });
+                        }
+                        else {
+                            $('#thank').show();
+                            $('#accept').hide();
+                        }
+                        
+                    });
+            });
+    }))
 </script>

@@ -19,6 +19,24 @@
     left: 100PX;
 }
 
+#sit {
+    color: gray;
+    font-size: 20px;
+    display: none;'
+}
+
 h1, h2 {
     color: #fff;
+}
+
+#message {
+    font-size: 20px
+}
+
+#accept {
+    display: none;
+}
+
+#thank {
+    display: none;
 }
